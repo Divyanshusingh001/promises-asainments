@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      margin: 50px;
+      background-color: #f5f5f5;
+    }
+
+    #paymentContainer {
+       
+        background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj1UL8aGtcSo_yokNPki5svdoYB7vblQaBTPGZZIjlDRDyM0GMEePMH_AAPhNxFFwXStw&usqp=CAU);
+        background-repeat: no-repeat;
+        background-size: 50px;
+      width: 350px;
+      height: 400px;
+      margin: auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    #processingUI, #successUI, #errorUI {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    #processingUI {
+      background-color: #1565C0;
+      color: #fff;
+    }
+
+    #successUI {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+
+    #errorUI {
+      background-color: #FF5252;
+      color: #fff;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #1565C0;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  </style>
+  <title>PhonePe Payment System</title>
+</head>
+<body>
+
+  <div id="paymentContainer">
+    <h1>PhonePe Payment System</h1>
+
+    <button onclick="initiatePayment()">Make Payment</button>
+
+    <div id="processingUI">Processing your payment...</div>
+    <div id="successUI">Payment successful!</div>
+    <div id="errorUI">Payment failed. Please try again.</div>
+  </div>
+
+  <script>
+    function initiatePayment() {
+      showProcessingUI();
+
+      // Simulate payment processing with a promise
+      const paymentPromise = new Promise((resolve, reject) => {
+        const success = Math.random() < 0.8; // Simulate 80% success rate
+        setTimeout(() => {
+          if (success) {
+            resolve();
+          } else {
+            reject();
+          }
+        }, 2000); // Simulate a 2-second processing time
+      });
+
+      paymentPromise.then(() => {
+        showSuccessUI();
+      }).catch(() => {
+        showErrorUI();
+      });
+    }
+
+    function showProcessingUI() {
+      document.getElementById('processingUI').style.display = 'block';
+      document.getElementById('successUI').style.display = 'none';
+      document.getElementById('errorUI').style.display = 'none';
+    }
+
+    function showSuccessUI() {
+      document.getElementById('processingUI').style.display = 'none';
+      document.getElementById('successUI').style.display = 'block';
+      document.getElementById('errorUI').style.display = 'none';
+    }
+
+    function showErrorUI() {
+      document.getElementById('processingUI').style.display = 'none';
+      document.getElementById('successUI').style.display = 'none';
+      document.getElementById('errorUI').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

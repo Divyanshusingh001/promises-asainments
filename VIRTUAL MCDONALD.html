@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+    #foodImage {
+        box-shadow: rgb(198, 63, 36) 0px 50px 100px -20px, rgba(76, 193, 150, 0.897) 0px 30px 60px -30px, rgba(8, 115, 221, 0.765) 0px -2px 6px 0px inset;
+      display: none;
+      width: 55%;
+      height: auto;
+      margin-top: 10px;
+      margin-left: 250px;
+    }
+    #order{
+        color: rgba(255, 0, 0, 0.557);
+    }
+    #reset{
+        color: rgb(3, 3, 3);
+        background-color: rgb(239, 237, 237);
+        width: 200px;
+      margin-top: 10px;
+    }
+    #loadingSpinner {
+      display: none;
+    }
+    body{
+        background-image: url(https://t3.ftcdn.net/jpg/02/87/76/00/360_F_287760066_COBeYwfeWuKtWnM9lm7cDCQESYQIoaNr.jpg);
+        background-size: 100%;
+
+    }  
+    input{
+        color: aliceblue;
+    }  
+    h1{
+        color: aliceblue;
+    }
+    label{
+        color: aliceblue;
+    }
+    
+  </style>
+  <title>Virtual Food Ordering System</title>
+</head>
+<body>    
+  <marquee><h1>Welcome to My Virtual McDonald's</h1></marquee>
+
+  <input id="order" type="button" value="Order Food" onclick="orderFood()">
+  
+  <div id="foodOptions">
+    <label><input type="checkbox" value="Burger">Burger</label>
+    <label><input type="checkbox" value="Fries">Fries</label>
+    <label><input type="checkbox" value="Drink">Drink</label>
+  </div>
+
+  <div id="loadingSpinner">
+    <p>Loading...</p>
+    <img src="spinner.gif" alt="Loading Spinner">
+  </div>
+
+  <div id="orderInfo" style="display: none;">
+    <p>Order ID: <span id="orderId"></span></p>
+    <img id="foodImage" src="" alt="Food Image">
+  </div>
+
+  <input id="reset" type="button" value="Reset" onclick="resetOrder()">
+
+  <script>
+    function orderFood() {
+      const foodOptions = document.querySelectorAll('#foodOptions input:checked');
+      
+      if (foodOptions.length === 0) {
+        alert('Please select at least one food item');
+        return;
+      }
+
+      document.getElementById('loadingSpinner').style.display = 'block';
+
+      // Simulate order processing with a promise
+      const orderPromise = new Promise((resolve, reject) => {
+        const randomSeconds = Math.floor(Math.random() * 5) + 1;
+        setTimeout(() => {
+          const success = Math.random() < 0.8; 
+          if (success) {
+            resolve();
+          } else {
+            reject('Failed to process the order. Please try again.');
+          }
+        }, randomSeconds * 1000);
+      });
+
+      orderPromise.then(() => {
+        const orderId = generateOrderId();
+        const selectedFood = Array.from(foodOptions).map(checkbox => checkbox.value).join(', ');
+
+        // Display order information
+        document.getElementById('orderId').innerText = orderId;
+        document.getElementById('foodImage').src = getImageUrl(selectedFood);
+        document.getElementById('foodImage').style.display = 'block';
+        document.getElementById('orderInfo').style.display = 'block';
+
+      
+        document.getElementById('loadingSpinner').style.display = 'none';
+      }).catch((error) => {
+        alert(error);
+       
+        document.getElementById('loadingSpinner').style.display = 'none';
+      });
+    }
+
+    function resetOrder() {
+     
+      document.getElementById('orderId').innerText = '';
+      document.getElementById('foodImage').src = '';
+      document.getElementById('foodImage').style.display = 'none';
+      document.getElementById('orderInfo').style.display = 'none';
+
+      const checkboxes = document.querySelectorAll('#foodOptions input');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+    }
+
+    function generateOrderId() {
+      return 'ORD' + Math.floor(Math.random() * 1000);
+    }
+
+    function getImageUrl(food) {
+      
+      switch (food) {
+        case 'Burger':
+          return 'https://d1ralsognjng37.cloudfront.net/6ca7a530-d795-415a-a7ff-8007c141ae95.jpeg';
+        case 'Fries':
+          return 'https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/EAKMGAVY5QI6XPCKMKCJZ5WMVE.jpg&w=1440';
+        case 'Drink':
+          return 'https://www.shutterstock.com/image-photo/poznan-pol-may-12-2021-260nw-2022922658.jpg';
+        default:
+          return 'placeholder.jpg';
+      }
+    }
+  </script>
+
+</body>
+</html>
